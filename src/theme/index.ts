@@ -9,6 +9,7 @@ const theme = {
     accent: "#F75A68",
     background: "#121214",
     surface: "#202024",
+    footer: "#212025",
     text: "#FFFFFF",
     disabled: "#7C7C8A",
     placeholder: "#C4C4CC",
@@ -24,6 +25,7 @@ const theme = {
     xl: 20,
   },
   sizes: {
+    small: [6],
     14: 56,
     33: 148,
   },
