@@ -4,20 +4,20 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { History } from "@screens/History";
 import { Home } from "@screens/Home";
-import { Products } from "@screens/Products";
 import { Profile } from "@screens/Profile";
 
-import HomeSvg from "@assets/home.svg";
 import HistorySvg from "@assets/history.svg";
+import HomeSvg from "@assets/home.svg";
 import ProfileSvg from "@assets/profile.svg";
-import HospitalSvg from "@assets/hospital.svg";
+import { PharmacyDetails } from "@screens/Pharmacy";
 import theme from "src/theme";
 
 type AppRoutes = {
   home: undefined;
   profile: undefined;
   products: undefined;
-  history: undefined;
+  history?: { medication?: any };
+  pharmacy?: { pharmacy?: any };
 };
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
@@ -66,6 +66,15 @@ export function AppRoutes() {
         }}
       />
       <Screen
+        name="history"
+        component={History}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <HistorySvg fill={color} width={iconSize} height={iconSize} />
+          ),
+        }}
+      />
+      <Screen
         name="profile"
         component={Profile}
         options={{
@@ -75,22 +84,9 @@ export function AppRoutes() {
         }}
       />
       <Screen
-        name="products"
-        component={Products}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <HospitalSvg fill={color} width={45} height={45} />
-          ),
-        }}
-      />
-      <Screen
-        name="history"
-        component={History}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <HistorySvg fill={color} width={iconSize} height={iconSize} />
-          ),
-        }}
+        name="pharmacy"
+        component={PharmacyDetails}
+        options={{ tabBarButton: () => null }}
       />
     </Navigator>
   );

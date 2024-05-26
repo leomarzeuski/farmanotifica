@@ -12,6 +12,7 @@ const theme = {
     footer: "#212025",
     text: "#FFFFFF",
     disabled: "#7C7C8A",
+    label: "#FFFFFF",
     placeholder: "#C4C4CC",
     backdrop: "#29292E",
     notification: "#F75A68",
