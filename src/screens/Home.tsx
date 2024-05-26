@@ -5,14 +5,23 @@ import {
   Keyboard,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Button, Card, Headline, Menu, Paragraph } from "react-native-paper";
+import {
+  Button,
+  Card,
+  Headline,
+  Menu,
+  Paragraph,
+  Text,
+} from "react-native-paper";
 import theme from "../theme";
 import { useNavigation } from "@react-navigation/native";
 import { PharmacyCard } from "@components/PharmacyCard";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export function Home() {
   const [pharmacies, setPharmacies] = useState([
@@ -185,30 +194,36 @@ export function Home() {
             <Headline style={styles.headline}>
               Informe o medicamento desejado
             </Headline>
-            <Menu
-              visible={showDropdown}
-              onDismiss={() => setShowDropdown(false)}
-              anchor={
-                <Button
-                  mode="outlined"
-                  onPress={() => setShowDropdown(true)}
-                  style={styles.selectButton}
-                >
-                  {selectedValue || "Selecione um medicamento"}
-                </Button>
-              }
-            >
-              {items.map((item) => (
-                <Menu.Item
-                  key={item.value}
-                  onPress={() => {
-                    setSelectedValue(item.value);
-                    setShowDropdown(false);
-                  }}
-                  title={item.label}
-                />
-              ))}
-            </Menu>
+            <View style={styles.selectContainer}>
+              <Menu
+                visible={showDropdown}
+                onDismiss={() => setShowDropdown(false)}
+                anchor={
+                  <TouchableOpacity
+                    style={styles.selectInput}
+                    onPress={() => setShowDropdown(true)}
+                  >
+                    <Text>{selectedValue || "Selecione um medicamento"}</Text>
+                    <MaterialCommunityIcons
+                      name="chevron-down"
+                      size={24}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                }
+              >
+                {items.map((item) => (
+                  <Menu.Item
+                    key={item.value}
+                    onPress={() => {
+                      setSelectedValue(item.value);
+                      setShowDropdown(false);
+                    }}
+                    title={item.label}
+                  />
+                ))}
+              </Menu>
+            </View>
             <Button
               mode="contained"
               onPress={handleSearch}
@@ -250,16 +265,37 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 8,
   },
-  selectButton: {
+  selectContainer: {
+    position: "relative",
     marginBottom: 16,
+  },
+  selectInput: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+  },
+  selectText: {
+    flex: 1,
+    color: theme.colors.text,
+  },
+  selectIcon: {
+    marginLeft: 8,
   },
   searchButton: {
     marginBottom: 16,
   },
-  card: {
-    marginBottom: 8,
-  },
   listContent: {
     paddingBottom: 20,
+  },
+  loadingText: {
+    textAlign: "center",
+    padding: 16,
+    color: theme.colors.text,
   },
 });

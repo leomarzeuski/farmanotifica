@@ -3,6 +3,7 @@ import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { Card, Text, IconButton, Avatar } from "react-native-paper";
 import { Entypo } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
+import theme from "src/theme";
 
 type Props = TouchableOpacityProps & {
   title: string;
@@ -28,7 +29,12 @@ export function PharmacyCard({ title, status, action, ...rest }: Props) {
             />
           )}
           right={(props) => (
-            <IconButton {...props} icon="chevron-right" size={24} />
+            <IconButton
+              {...props}
+              icon="chevron-right"
+              iconColor={theme.colors.primary}
+              size={24}
+            />
           )}
         />
         <Card.Content>
