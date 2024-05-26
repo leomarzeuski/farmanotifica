@@ -5,6 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
@@ -39,6 +40,11 @@ export const PharmacyDetails = () => {
     } else {
       alert("Por favor, selecione um medicamento.");
     }
+  }
+
+  function handleOpenMaps() {
+    const url = `https://www.google.com/maps/search/?api=1&query=${pharmacy.latitude},${pharmacy.longitude}`;
+    Linking.openURL(url);
   }
 
   return (
@@ -98,9 +104,19 @@ export const PharmacyDetails = () => {
                 visible={menuVisible}
                 onDismiss={() => setMenuVisible(false)}
                 anchor={
-                  <Button mode="outlined" onPress={() => setMenuVisible(true)}>
-                    {selectedMedication || "Selecione um medicamento"}
-                  </Button>
+                  <TouchableOpacity
+                    style={styles.selectInput}
+                    onPress={() => setMenuVisible(true)}
+                  >
+                    <Text>
+                      {selectedMedication || "Selecione um medicamento"}
+                    </Text>
+                    <MaterialCommunityIcons
+                      name="chevron-down"
+                      size={24}
+                      color="black"
+                    />
+                  </TouchableOpacity>
                 }
               >
                 {pharmacy.medications.map(
@@ -117,6 +133,17 @@ export const PharmacyDetails = () => {
                 )}
               </Menu>
             </View>
+            <TouchableOpacity
+              onPress={handleOpenMaps}
+              style={styles.detailsItem}
+            >
+              <MaterialCommunityIcons
+                name="map-marker"
+                size={24}
+                color={theme.colors.primary}
+              />
+              <Text style={styles.detailsText}>Localização</Text>
+            </TouchableOpacity>
             <Button
               mode="contained"
               onPress={handleReserve}
@@ -194,5 +221,16 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
+  },
+  selectInput: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    paddingHorizontal: 24,
+    paddingVertical: 4,
   },
 });

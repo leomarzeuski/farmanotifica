@@ -17,6 +17,7 @@ const theme = {
     backdrop: "#29292E",
     notification: "#F75A68",
     onSurface: "#323238",
+    warning: "#FFE088",
   },
   fontSizes: {
     xs: 12,
