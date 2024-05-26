@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, SectionList, StyleSheet } from "react-native";
+import { View, SectionList, StyleSheet, Platform } from "react-native";
 import {
   Text,
   Card,
@@ -10,7 +10,7 @@ import {
   Paragraph,
   Provider as PaperProvider,
 } from "react-native-paper";
-import { DatePickerModal } from "react-native-paper-dates";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { HistoryCard } from "@components/HistoryCard";
 import { ScreenHeader } from "@components/ScreenHeader";
 import theme from "src/theme";
@@ -77,10 +77,12 @@ export const History = () => {
     setShowDatePicker(false);
   };
 
-  const onConfirm = ({ date }: any) => {
+  const onConfirm = (event: any, date?: Date) => {
     setShowDatePicker(false);
-    setSelectedDate(date);
-    setShowConfirmationModal(true);
+    if (date) {
+      setSelectedDate(date);
+      setShowConfirmationModal(true);
+    }
   };
 
   const handleLoadDocument = () => {
@@ -91,6 +93,7 @@ export const History = () => {
             ...item,
             title: "Em análise",
             status: "Em análise",
+            action: "",
           };
         }
         return item;
@@ -114,6 +117,7 @@ export const History = () => {
       title: `Agendado para ${new Date(selectedDate).toLocaleDateString()}`,
       status: "Expira em 5 dias...",
       date: selectedDate,
+      action: "Agendado",
     };
 
     setAppointments([...appointments, newAppointment]);
@@ -123,9 +127,8 @@ export const History = () => {
 
   return (
     <PaperProvider theme={theme}>
+      <ScreenHeader title="Histórico de Medicamentos" />
       <View style={styles.container}>
-        <ScreenHeader title="Histórico de Medicamentos" />
-
         {showAppointments ? (
           <>
             <SectionList
@@ -210,15 +213,14 @@ export const History = () => {
             </Card>
           </Modal>
 
-          <DatePickerModal
-            mode="single"
-            visible={showDatePicker}
-            onDismiss={onDismiss}
-            date={selectedDate}
-            onConfirm={onConfirm}
-            locale="pt"
-            disableSafeTop
-          />
+          {showDatePicker && (
+            <DateTimePicker
+              value={selectedDate || new Date()}
+              mode="date"
+              display={Platform.OS === "ios" ? "inline" : "default"}
+              onChange={onConfirm}
+            />
+          )}
 
           <Modal
             visible={showConfirmationModal}
@@ -258,6 +260,7 @@ export const History = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
     backgroundColor: theme.colors.background,
   },
   sectionHeader: {

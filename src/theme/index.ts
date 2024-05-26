@@ -15,9 +15,9 @@ const theme = {
     label: "#FFFFFF",
     placeholder: "#C4C4CC",
     backdrop: "#29292E",
-    notification: "#F75A68",
+    notification: "red",
     onSurface: "#323238",
-    warning: "#FFE088",
+    warning: "#F6BA00",
   },
   fontSizes: {
     xs: 12,

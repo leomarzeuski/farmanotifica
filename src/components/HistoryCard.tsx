@@ -1,22 +1,22 @@
-import React from "react";
-import { Card, Text, IconButton, useTheme } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
+import { Card, Text } from "react-native-paper";
+import * as Notifications from "expo-notifications";
 import theme from "src/theme";
 
 export const HistoryCard = ({ status, title, action, onPress }: any) => {
   const getStatusColor = () => {
     switch (status) {
       case "Enviar":
-        return theme.colors.primary;
+        return theme.colors.secondary;
       case "Agendar":
-        return theme.colors.primary;
+        return theme.colors.secondary;
       case "Reenviar":
-        return theme.colors.error;
+        return theme.colors.notification;
       case "Em análise":
-        return theme.colors.primary;
+        return theme.colors.secondary;
       default:
-        return theme.colors.elevation;
+        return theme.colors.primary;
     }
   };
 
@@ -35,8 +35,26 @@ export const HistoryCard = ({ status, title, action, onPress }: any) => {
     }
   };
 
+  const handlePress = async () => {
+    if (status === "Em análise") {
+      // Simulate changing the status to "Agendar"
+      await sendNotification();
+    }
+    onPress();
+  };
+
+  const sendNotification = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Status Atualizado",
+        body: "O status foi alterado para Agendar.",
+      },
+      trigger: null,
+    });
+  };
+
   return (
-    <Card style={styles.card} onPress={onPress}>
+    <Card style={styles.card} onPress={handlePress}>
       <Card.Content style={styles.content}>
         <View>
           <Text style={styles.title}>{title}</Text>
