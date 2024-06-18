@@ -1,5 +1,5 @@
 import BackgroundImg from "@assets/background.png";
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, StyleSheet, Text, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "src/theme";
@@ -9,13 +9,24 @@ import { Button } from "@components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 import { Layout } from "@components/Layout";
+import { useAuth } from "@routes/AuthContext";
+import { useSnackbar } from "src/context/snackbar.context";
 
 export function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signIn } = useAuth();
+  const { showSnackbar } = useSnackbar();
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
   function handleNewAccount() {
     navigation.navigate("signUp");
   }
+
+  const handleSignIn = () => {
+    if (email) signIn(email, password);
+  };
 
   return (
     <Layout>
@@ -46,9 +57,16 @@ export function SignIn() {
           placeholder="E-mail"
           keyboardType="email-address"
           autoCapitalize="none"
+          onChangeText={setEmail}
+          value={email}
         />
-        <Input placeholder="Senha" secureTextEntry />
-        <Button title="Acessar" />
+        <Input
+          placeholder="Senha"
+          secureTextEntry
+          onChangeText={setPassword}
+          value={password}
+        />
+        <Button title="Acessar" onPress={handleSignIn} />
 
         <View style={styles.createAccount}>
           <Text style={{ color: theme.colors.text }}>

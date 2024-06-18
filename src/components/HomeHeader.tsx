@@ -4,8 +4,15 @@ import { View, StyleSheet } from "react-native";
 import theme from "src/theme";
 import { Row } from "./Row";
 import { UserPhoto } from "./UserPhoto";
+import { useAuth } from "@routes/AuthContext";
 
 export function HomeHeader() {
+  const { signOut } = useAuth();
+
+  const handleLogout = () => {
+    signOut();
+  };
+
   return (
     <View style={styles.container}>
       <Row style={styles.row}>
@@ -18,9 +25,7 @@ export function HomeHeader() {
           icon="logout"
           iconColor={theme.colors.primary}
           size={28}
-          onPress={() => {
-            console.log("Logout button pressed");
-          }}
+          onPress={handleLogout}
           style={styles.logoutButton}
         />
       </Row>

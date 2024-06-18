@@ -37,7 +37,6 @@ export const HistoryCard = ({ status, title, action, onPress }: any) => {
 
   const handlePress = async () => {
     if (status === "Em análise") {
-      // Simulate changing the status to "Agendar"
       await sendNotification();
     }
     onPress();
@@ -46,8 +45,11 @@ export const HistoryCard = ({ status, title, action, onPress }: any) => {
   const sendNotification = async () => {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Status Atualizado",
-        body: "O status foi alterado para Agendar.",
+        title: "Seu laudo foi aprovado. 🎉🎉",
+        body: "O status foi alterado, agende uma data para a retirada do medicamento! 😊📅",
+        data: { screen: "agendamento" },
+        badge: 1,
+        sound: true,
       },
       trigger: null,
     });

@@ -1,11 +1,13 @@
-import * as React from "react";
+// src/App.tsx
+import React from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { Loading } from "./src/components/Loading";
 import theme from "./src/theme";
-import { Routes } from "@routes/index";
+import { Routes } from "./src/routes";
 import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
+import { AuthProvider } from "@routes/AuthContext";
+import { SnackbarProvider } from "src/context/snackbar.context";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -29,16 +31,6 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
-    // Solicitar permissões
-    async function requestPermissions() {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status !== "granted") {
-        alert("Falha ao obter permissões de notificação!");
-      }
-    }
-
-    requestPermissions();
-
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         console.log(notification);
@@ -46,7 +38,9 @@ export default function App() {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        const screen = response.notification.request.content.data.screen;
+        if (screen) {
+        }
       });
 
     return () => {
@@ -58,23 +52,30 @@ export default function App() {
   }, []);
 
   return (
-    <PaperProvider theme={theme}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
-      <View
-        style={[styles.container, { backgroundColor: theme.colors.background }]}
-      >
-        {isLoading ? <Loading /> : <Routes />}
-      </View>
-    </PaperProvider>
+    <AuthProvider>
+      <PaperProvider theme={theme}>
+        <SnackbarProvider>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          <View
+            style={[
+              styles.container,
+              { backgroundColor: theme.colors.background },
+            ]}
+          >
+            {isLoading ? <Loading /> : <Routes />}
+          </View>
+        </SnackbarProvider>
+      </PaperProvider>
+    </AuthProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
   },
 });
