@@ -1,4 +1,4 @@
-import BackgroundImg from "@assets/background.png";
+import BackgroundImg from "@assets/background1.png";
 import React from "react";
 import { Image, View, StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -23,8 +23,8 @@ export function SignUp() {
         <Image
           source={BackgroundImg}
           defaultSource={BackgroundImg}
-          resizeMode="contain"
-          style={{ position: "absolute" }}
+          resizeMode="cover"
+          style={{ position: "absolute", width: "100%" }}
         />
         <View style={styles.center}>
           <View style={styles.iconContainer}>

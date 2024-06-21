@@ -14,6 +14,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { HistoryCard } from "@components/HistoryCard";
 import { ScreenHeader } from "@components/ScreenHeader";
 import theme from "src/theme";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export const History = () => {
   const [medications, setMedications] = useState([
@@ -62,6 +63,21 @@ export const History = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [showAppointments, setShowAppointments] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker1 = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: any) => {
+    setShowConfirmationModal(true);
+    setSelectedDate(date);
+    hideDatePicker();
+  };
 
   const handleCardPress = (item: any) => {
     setSelectedItem(item);
@@ -69,7 +85,9 @@ export const History = () => {
       setSelectedFileName("nome do arquivo");
       setShowModal(true);
     } else if (item.status === "Agendar") {
-      setShowDatePicker(true);
+      Platform.OS === "ios"
+        ? setDatePickerVisibility(true)
+        : setShowDatePicker(true);
     }
   };
 
@@ -115,7 +133,7 @@ export const History = () => {
     const newAppointment = {
       ...selectedItem,
       title: `Agendado para ${new Date(selectedDate).toLocaleDateString()}`,
-      status: "Expira em 5 dias...",
+      status: "Expira em 3 dias...",
       date: selectedDate,
       action: "Agendado",
     };
@@ -213,14 +231,22 @@ export const History = () => {
             </Card>
           </Modal>
 
-          {showDatePicker && (
-            <DateTimePicker
-              value={selectedDate || new Date()}
-              mode="date"
-              display={Platform.OS === "ios" ? "inline" : "default"}
-              onChange={onConfirm}
-            />
-          )}
+          {showDatePicker &&
+            (Platform.OS === "ios" ? (
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+            ) : (
+              <DateTimePicker
+                value={selectedDate || new Date()}
+                mode="date"
+                display={"default"}
+                onChange={onConfirm}
+              />
+            ))}
 
           <Modal
             visible={showConfirmationModal}

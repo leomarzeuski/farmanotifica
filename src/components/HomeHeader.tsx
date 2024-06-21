@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     backgroundColor: theme.colors.footer,
-    paddingTop: 40,
+    paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 30,
     justifyContent: "flex-start",
