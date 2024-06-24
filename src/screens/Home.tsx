@@ -218,7 +218,7 @@ export function Home() {
 
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
-      <ScrollView>
+      <View style={{ flex: 1, flexGrow: 1 }}>
         <View style={styles.container}>
           <HomeHeader />
           <View style={styles.content}>
@@ -277,7 +277,7 @@ export function Home() {
             />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   listContent: {
-    paddingBottom: 20,
+    paddingBottom: 350,
   },
   loadingText: {
     textAlign: "center",

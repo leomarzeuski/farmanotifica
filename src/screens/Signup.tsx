@@ -1,4 +1,4 @@
-import BackgroundImg from "@assets/background1.png";
+import BackgroundImg from "@assets/background4.png";
 import React from "react";
 import { Image, View, StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
