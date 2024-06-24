@@ -36,7 +36,7 @@ export function HomeHeader() {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: theme.colors.footer,
+    backgroundColor: theme.colors.surface,
     paddingTop: 40,
     paddingBottom: 20,
     paddingHorizontal: 30,

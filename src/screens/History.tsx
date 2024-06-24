@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   sectionHeader: {
-    color: theme.colors.text,
+    color: theme.colors.background,
     fontSize: 16,
     marginVertical: 8,
     marginHorizontal: 16,

@@ -11,21 +11,24 @@ import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 import { Layout } from "@components/Layout";
 import { useAuth } from "@routes/AuthContext";
 import { useSnackbar } from "src/context/snackbar.context";
+import { useForm, Controller } from "react-hook-form";
 
 export function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { signIn } = useAuth();
   const { showSnackbar } = useSnackbar();
-
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
   function handleNewAccount() {
     navigation.navigate("signUp");
   }
 
-  const handleSignIn = () => {
-    if (email) signIn(email, password);
+  const handleSignIn = (data: any) => {
+    if (data.email) signIn(data.email, data.password);
   };
 
   return (
@@ -53,20 +56,48 @@ export function SignIn() {
         <Headline style={{ color: theme.colors.text }}>
           Acesse sua conta
         </Headline>
-        <Input
-          placeholder="E-mail"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          onChangeText={setEmail}
-          value={email}
+        <Controller
+          control={control}
+          name="email"
+          rules={{
+            required: "E-mail é obrigatório",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "E-mail inválido",
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="E-mail"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={!!errors.email}
+              errorMessage={errors.email ? errors.email.message : ""}
+            />
+          )}
         />
-        <Input
-          placeholder="Senha"
-          secureTextEntry
-          onChangeText={setPassword}
-          value={password}
+
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: "Senha é obrigatória" }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Senha"
+              secureTextEntry
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={!!errors.password}
+              errorMessage={errors.password ? errors.password.message : ""}
+            />
+          )}
         />
-        <Button title="Acessar" onPress={handleSignIn} />
+
+        <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
 
         <View style={styles.createAccount}>
           <Text style={{ color: theme.colors.text }}>

@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   container: { paddingBottom: 20 },
   header: {
     backgroundColor: theme.colors.surface,
-    paddingTop: 60,
+    paddingTop: 30,
     marginBottom: 20,
     padding: 20,
     alignItems: "center",

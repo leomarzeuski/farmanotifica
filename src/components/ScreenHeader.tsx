@@ -10,7 +10,7 @@ type Props = {
 export const ScreenHeader = ({ title }: Props) => {
   return (
     <Appbar.Header
-      style={[styles.header, { backgroundColor: theme.colors.footer }]}
+      style={[styles.header, { backgroundColor: theme.colors.surface }]}
     >
       <Appbar.Content
         style={{ height: 60, alignItems: "center" }}

@@ -1,5 +1,4 @@
 import BackgroundImg from "@assets/background4.png";
-import React from "react";
 import { Image, View, StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "src/theme";
@@ -9,13 +8,24 @@ import { Button } from "@components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 import { Layout } from "@components/Layout";
+import { useForm, Controller } from "react-hook-form";
 
 export function SignUp() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   function handleGoBack() {
     navigation.navigate("signIn");
   }
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
 
   return (
     <Layout>
@@ -42,14 +52,64 @@ export function SignUp() {
         <Headline style={{ color: theme.colors.text }}>
           Acesse sua conta
         </Headline>
-        <Input placeholder="Nome" />
-        <Input
-          placeholder="E-mail"
-          keyboardType="email-address"
-          autoCapitalize="none"
+        <Controller
+          control={control}
+          name="name"
+          rules={{ required: "Nome é obrigatório" }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Nome"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={!!errors.name}
+              errorMessage={errors.name ? errors.name.message : ""}
+            />
+          )}
         />
-        <Input placeholder="Senha" secureTextEntry />
-        <Button title="Criar e Acessar" />
+
+        <Controller
+          control={control}
+          name="email"
+          rules={{
+            required: "E-mail é obrigatório",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "E-mail inválido",
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="E-mail"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={!!errors.email}
+              errorMessage={errors.email ? errors.email.message : ""}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: "Senha é obrigatória" }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              placeholder="Senha"
+              secureTextEntry
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={!!errors.password}
+              errorMessage={errors.password ? errors.password.message : ""}
+            />
+          )}
+        />
+
+        <Button title="Criar e Acessar" onPress={handleSubmit(onSubmit)} />
 
         <View style={styles.createAccount}>
           <Button
@@ -94,6 +154,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-    marginTop: 120,
+    marginTop: 80,
   },
 });
